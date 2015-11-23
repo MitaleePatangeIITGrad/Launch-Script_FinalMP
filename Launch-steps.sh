@@ -28,14 +28,14 @@ PHONENUMBER=19143193344
 
 echo -e "\n Cleanup script will cleanup all existing data"
 
-../Environment_MP2/cleanup.sh
+../Environment_FinalMP/cleanup.sh
 
 #Step 1a: Launch the instances and provide the user-data via the install-env.sh
 
 echo -e "\n Launching Instances"
 
 declare -a INSTANCELIST 
-INSTANCELIST=(`aws ec2 run-instances --image-id $1 --count $2 --instance-type $3 --security-group-ids $4 --subnet-id $5 --key-name $6 --associate-public-ip-address --iam-instance-profile Name=$7 --user-data file://../Environment_MP2/install-env.sh --output text | grep INSTANCES | awk {' print $7'}`)
+INSTANCELIST=(`aws ec2 run-instances --image-id $1 --count $2 --instance-type $3 --security-group-ids $4 --subnet-id $5 --key-name $6 --associate-public-ip-address --iam-instance-profile Name=$7 --user-data file://../Environment_FinalMP/install-env.sh --output text | grep INSTANCES | awk {' print $7'}`)
 
 for i in {0..60}; do echo -ne '.'; sleep 1;done
 
@@ -86,7 +86,7 @@ for i in {0..25}; do echo -ne '.'; sleep 1;done
 #Step 3a: Configure launch configuration
 
 echo -e "\n Creating Launch Configuration"
-aws autoscaling create-launch-configuration --launch-configuration-name $LAUNCHCONFNAME --iam-instance-profile $7 --user-data file://../Environment_MP2/install-env.sh --key-name $6 --instance-type $3 --security-groups $4 --image-id $1
+aws autoscaling create-launch-configuration --launch-configuration-name $LAUNCHCONFNAME --iam-instance-profile $7 --user-data file://../Environment_FinalMP/install-env.sh --key-name $6 --instance-type $3 --security-groups $4 --image-id $1
 
 echo -e "\n Finished launching configuration and sleeping 25 seconds"
 for i in {0..25}; do echo -ne '.'; sleep 1;done
